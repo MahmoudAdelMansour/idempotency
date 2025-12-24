@@ -11,7 +11,7 @@ class WebhookController extends Controller
     {
         $validated = $request->validated();
 //        I can do it from the Request page but , I prefer to do it here because single responsibilities
-        $validated['payload'] = $request->getContent();
+        $validated['payload'] = json_encode(trim($request->getContent()));
         Webhook::create($validated);
         return response()->json(['message' => 'Webhook received successfully']);
     }
