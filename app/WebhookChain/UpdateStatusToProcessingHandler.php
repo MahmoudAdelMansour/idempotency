@@ -7,11 +7,10 @@ use App\WebhookChain\WebhookHandler;
 
 class UpdateStatusToProcessingHandler extends WebhookHandler
 {
-
     public function handle(Webhook $webhook, array $context = []): array
     {
-        $webhook->update(['status' => 'processed']);
-        return $this->handleNext($webhook, $context);
+        $webhook->update(['status' => 'processing']);
 
+        return $this->handleNext($webhook, $context);
     }
 }

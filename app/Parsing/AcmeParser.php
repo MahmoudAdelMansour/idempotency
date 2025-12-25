@@ -13,6 +13,7 @@ class AcmeParser implements WebhookParser
         $lines = explode("\n", $payload);
         $transactions = [];
         foreach ($lines as $line) {
+            $line = str_starts_with($line, '"') && str_ends_with($line, '"') ? substr($line, 1, -1) : $line;
             [$date,$amount,$reference,$metadata] = $this->parseLine($line);
             $transactions[] = [
                 'reference' => $reference,
