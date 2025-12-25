@@ -9,6 +9,8 @@ class DateParser
 {
     public static function parse(string $dateString): Carbon
     {
+//        Allowed [ 20250615 Or 20250615156 ]
+
         return match(strlen($dateString)) {
             10 => self::parseTimestamp($dateString),
             11 => self::parseDateIgnoreDigits($dateString),

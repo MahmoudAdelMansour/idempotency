@@ -12,7 +12,9 @@ return new class extends Migration {
             $table->string('bank_name');
             $table->enum('status', ['pending', 'processing', 'processed', 'failed']);
             $table->json('payload');
-            $table->timestamp('received_at');
+            $table->timestamp('received_at')
+                ->useCurrent()
+            ;
             $table->timestamps();
         });
     }

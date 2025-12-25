@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('client_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('client_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string("bank_name");
             $table->text("bank_reference");
             $table->decimal("amount");

@@ -11,6 +11,8 @@ class FoodicsParser implements WebhookParser
         $lines = explode("\n", $payload);
         $transactions = [];
         foreach ($lines as $line) {
+            $line = str_starts_with($line, '"') && str_ends_with($line, '"') ? substr($line, 1, -1) : $line;
+
             [$date,$amount,$reference,$metadata] = $this->parseLine($line);
             $transactions[] = [
                 'reference' => $reference,
@@ -24,6 +26,7 @@ class FoodicsParser implements WebhookParser
     private function parseLine(string $line): array
     {
         $parts = explode('#', $line);
+
         // Date,Amount Parsing
         [$dateString, $amountString] = explode(',', $parts[0], 2);
         $date = DateParser::parse($dateString);
