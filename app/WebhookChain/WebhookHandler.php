@@ -20,6 +20,7 @@ abstract class WebhookHandler
         if ($this->nextHandler) {
             return $this->nextHandler->handle($webhook, $context);
         }
+
         return $context;
     }
 }

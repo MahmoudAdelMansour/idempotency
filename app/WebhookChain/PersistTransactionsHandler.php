@@ -11,7 +11,9 @@ class PersistTransactionsHandler extends WebhookHandler
 
     public function handle(Webhook $webhook, array $context = []): array
     {
+        echo "test";
         $transactions = $context['transactions'] ?? [];
+
         foreach ($transactions as $transactionData) {
            Transaction::updateOrCreate(
                [

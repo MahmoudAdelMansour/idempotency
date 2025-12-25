@@ -11,7 +11,7 @@ class DateParser
     {
 //        Allowed [ 20250615 Or 20250615156 ]
 
-        return match(strlen($dateString)) {
+        return match(strlen(trim($dateString))) {
             10 => self::parseTimestamp($dateString),
             11 => self::parseDateIgnoreDigits($dateString),
             14 => self::parseDateTime($dateString),

@@ -10,7 +10,7 @@ class UpdateStatusToProcessedHandler extends WebhookHandler
 
     public function handle(Webhook $webhook, array $context = []): array
     {
-        $webhook->update(['status' => 'processing']);
+        $webhook->update(['status' => 'processed']);
         return $this->handleNext($webhook, $context);
 
     }
