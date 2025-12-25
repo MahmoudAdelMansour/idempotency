@@ -1,14 +1,11 @@
 <?php
 
-namespace App;
+namespace App\Parsing;
 
-use App\Parsing\WebhookParser;
 use App\Utility\DateParser;
-use Illuminate\Support\Carbon;
 
 class FoodicsParser implements WebhookParser
 {
-
     public function parse(string $payload, string $bankName): array
     {
         $lines = explode("\n", $payload);
@@ -16,9 +13,9 @@ class FoodicsParser implements WebhookParser
         foreach ($lines as $line) {
             [$date,$amount,$reference,$metadata] = $this->parseLine($line);
             $transactions[] = [
+                'reference' => $reference,
                 'date' => $date,
                 'amount' => $amount,
-                'reference' => $reference,
                 'metadata' => $metadata
             ];
         }
@@ -50,6 +47,5 @@ class FoodicsParser implements WebhookParser
         }
         return $metadata;
     }
-
 
 }
