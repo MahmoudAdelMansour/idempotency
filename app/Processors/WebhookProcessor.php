@@ -19,9 +19,8 @@ class WebhookProcessor
     public function process(Webhook $webhook): array
     {
         $chain = $this->buildChain();
-
         try {
-return  $chain->handle($webhook);
+            return  $chain->handle($webhook);
         } catch (\Exception $e) {
             $webhook->update(['status' => 'failed']);
             throw $e;
@@ -30,6 +29,12 @@ return  $chain->handle($webhook);
 
     private function buildChain(): WebhookHandler
     {
+     /*
+      *Fluent chaining works well for builders, but Chain of Responsibility represents a linked execution flow.
+        Returning $this or $handler in a fluent API can unintentionally change the execution entry point.
+        To avoid ambiguity and ensure the chain always starts from a single, explicit root handler, I preferred manual wiring.
+
+      * */
         $updateToProcessing = new UpdateStatusToProcessingHandler();
         $parsePayload = new ParsePayloadHandler($this->parserFactory);
         $persistTransactions = new PersistTransactionsHandler();

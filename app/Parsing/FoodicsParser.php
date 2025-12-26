@@ -8,10 +8,13 @@ class FoodicsParser implements WebhookParser
 {
     public function parse(string $payload, string $bankName): array
     {
-        $lines = explode("\n", $payload);
+        if (empty($payload)) {
+            return [];
+        }
         $transactions = [];
+        $lines = explode("\\n", $payload);
         foreach ($lines as $line) {
-            $line = str_starts_with($line, '"') && str_ends_with($line, '"') ? substr($line, 1, -1) : $line;
+            $line = str_starts_with($line, '"') || str_ends_with($line, '"') ? substr($line, 1, -1) : $line;
             [$date,$amount,$reference,$metadata] = $this->parseLine($line);
             $transactions[] = [
                 'reference' => $reference,
@@ -38,7 +41,7 @@ class FoodicsParser implements WebhookParser
     private function parseMetadata(string $metadataString): array
     {
 
-        $pairs = explode('/', $metadataString);
+        $pairs = explode('/', stripslashes($metadataString));
         $metadata = [];
 
         // Loop through pairs: key, value, key, value...
