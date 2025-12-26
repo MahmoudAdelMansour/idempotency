@@ -3,6 +3,7 @@
 namespace App\Parsing;
 
 use App\Utility\DateParser;
+use Dflydev\DotAccessData\Data;
 
 class AcmeParser implements WebhookParser
 {
@@ -10,10 +11,12 @@ class AcmeParser implements WebhookParser
 // But i decided to keep it simple for now as the requirement is only for two parsers.
     public function parse(string $payload, string $bankName): array
     {
-        $lines = explode("\n", $payload);
+        $lines = explode("n", $payload);
+
         $transactions = [];
         foreach ($lines as $line) {
-            $line = str_starts_with($line, '"') && str_ends_with($line, '"') ? substr($line, 1, -1) : $line;
+
+            $line = str_starts_with($line, '"')  ||  str_ends_with($line, '"') ? substr($line, 1, -1) : $line;
             [$date,$amount,$reference,$metadata] = $this->parseLine($line);
             $transactions[] = [
                 'reference' => $reference,
@@ -27,6 +30,7 @@ class AcmeParser implements WebhookParser
     private function parseLine(string $line): array
     {
         $parts = explode('//', stripslashes($line));
+
         // [156,50//202506159000001//20250615]
         $amount = (float) str_replace(',', '.', $parts[0]);
         $reference = $parts[1];

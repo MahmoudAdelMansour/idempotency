@@ -9,15 +9,18 @@ class DateParser
 {
     public static function parse(string $dateString): Carbon
     {
-//        Allowed [ 20250615 Or 20250615156 ]
 
-        return match(strlen(trim($dateString))) {
+
+
+        $dateString = trim($dateString);
+        echo $dateString;
+        return match(strlen($dateString)) {
             10 => self::parseTimestamp($dateString),
             11 => self::parseDateIgnoreDigits($dateString),
             14 => self::parseDateTime($dateString),
             8 => self::parseDate($dateString),
             default => throw new InvalidArgumentException(
-                "Unknown date format length: {$dateString}"
+                "Unknown date format length: {$dateString} it's ".strlen($dateString)
             )
         };
     }
@@ -44,6 +47,7 @@ class DateParser
 
     private static function parseDate(string $dateString): Carbon
     {
+
         $date = Carbon::createFromFormat('Ymd', $dateString);
 
         if (!$date) {
