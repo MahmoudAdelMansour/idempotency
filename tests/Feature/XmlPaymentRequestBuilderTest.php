@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Unit;
+namespace Feature;
 
 use App\Builder\XmlPaymentRequestBuilder;
 use Illuminate\Support\Carbon;
