@@ -11,7 +11,6 @@ class XmlPaymentRequestBuilderTest extends TestCase
     public function test_it_generates_required_xml_structure()
     {
         $tx = $this->transaction();
-
         $xml = new XmlPaymentRequestBuilder()
             ->setTransferInfo(
                 $tx['reference'],
