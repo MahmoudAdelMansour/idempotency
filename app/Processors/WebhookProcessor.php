@@ -9,6 +9,7 @@ use App\WebhookChain\PersistTransactionsHandler;
 use App\WebhookChain\UpdateStatusToProcessedHandler;
 use App\WebhookChain\UpdateStatusToProcessingHandler;
 use App\WebhookChain\WebhookHandler;
+use Illuminate\Support\Facades\DB;
 
 class WebhookProcessor
 {
@@ -19,10 +20,16 @@ class WebhookProcessor
     public function process(Webhook $webhook): array
     {
         $chain = $this->buildChain();
+
         try {
-            return  $chain->handle($webhook);
-        } catch (\Exception $e) {
-            $webhook->update(['status' => 'failed']);
+            return DB::transaction(function () use ($chain, $webhook) {
+                return $chain->handle($webhook);
+            });
+        } catch (\Throwable $e) {
+            $webhook->update([
+                'status' => 'failed',
+            ]);
+
             throw $e;
         }
     }
